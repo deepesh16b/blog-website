@@ -46,12 +46,7 @@ app.get("/posts/:topic", function(req, res){
       res.render("post", {post : post});
     }
   })
-  if(found){
-    print("Match found!");
-  }
-  else{
-    print("Match Not found!");
-  }
+  
 });
 
 // ----Post Request-----------
@@ -64,17 +59,19 @@ app.post("/compose", function (req, res) {
     title : req.body.postTitle,
     content : req.body.postBody
   };
-  // var temp1 = '<span id="dots">...</span><span id="more">';
-  // var temp2 = "</span>";
-  // post.content = [post.content.slice(0,60), temp1 , post.content.slice(60), temp2].join("");
+
   posts.push(post);
   res.redirect("/");
 });
 
-
-
-
-
+app.post("/post", function (req, res) { 
+  for (let i = 0; i < posts.length; i++) {
+    if(posts[i].title === req.body.title){
+      posts.splice(i, 1);
+    }
+  }
+  res.redirect("/");
+});
 
 app.listen(process.env.PORT || 3000, function() {
   console.log("Server started on port 3000");
